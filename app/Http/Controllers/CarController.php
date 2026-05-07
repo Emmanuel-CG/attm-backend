@@ -170,4 +170,59 @@ public function featured() {
     return Car::with('user')->where('featured', true)->get();
 }
 
+public function filter(Request $request)
+{
+    $query = Car::query();
+
+    // 🔍 BUSCADOR
+    if ($request->search) {
+        $query->where(function ($q) use ($request) {
+            $q->where('brand', 'like', "%{$request->search}%")
+              ->orWhere('model', 'like', "%{$request->search}%");
+        });
+    }
+
+    // 🚗 MARCA
+    if ($request->brand) {
+        $query->where('brand', $request->brand);
+    }
+
+    // 💰 PRECIO
+    if ($request->price == 'low') {
+        $query->where('price', '<=', 200000);
+    }
+
+    if ($request->price == 'mid') {
+        $query->whereBetween('price', [200000, 300000]);
+    }
+
+    if ($request->price == 'high') {
+        $query->where('price', '>=', 300000);
+    }
+
+    // 🔃 ORDEN
+    if ($request->order == 'price_asc') {
+        $query->orderBy('price', 'asc');
+    }
+
+    if ($request->order == 'price_desc') {
+        $query->orderBy('price', 'desc');
+    }
+
+    if ($request->order == 'year') {
+        $query->orderBy('year', 'desc');
+    }
+
+    if ($request->order == 'km') {
+        $query->orderBy('mileage', 'asc');
+    }
+
+    // default
+    if (!$request->order || $request->order == 'latest') {
+        $query->latest();
+    }
+
+    return response()->json($query->get());
+}
+
 }
