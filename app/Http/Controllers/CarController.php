@@ -224,5 +224,49 @@ public function filter(Request $request)
 
     return response()->json($query->get());
 }
+public function adminCars()
+{
+    $cars = Car::with('user')
+        ->latest()
+        ->get()
+        ->map(function ($car) {
 
+            return [
+                'id' => $car->id,
+                'brand' => $car->brand,
+                'model' => $car->model,
+                'year' => $car->year,
+                'price' => $car->price,
+                'seller' => $car->user?->name ?? 'Sin usuario',
+                'status' => $car->status ?? 'pending',
+                'createdAt' => $car->created_at->format('Y-m-d'),
+            ];
+        });
+
+    return response()->json($cars);
+}
+
+public function updateStatus(Request $request, $id)
+{
+    $car = Car::find($id);
+
+    if (!$car) {
+        return response()->json([
+            'error' => 'Auto no encontrado'
+        ], 404);
+    }
+
+    $request->validate([
+        'status' => 'required|in:pending,approved,rejected'
+    ]);
+
+    $car->status = $request->status;
+
+    $car->save();
+
+    return response()->json([
+        'message' => 'Estado actualizado',
+        'car' => $car
+    ]);
+}
 }

@@ -15,4 +15,9 @@ class Contact extends Model
         'offeredPrice',
         'status',
     ];
+
+        public function car()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

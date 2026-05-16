@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\AdminController;
 
 
 Route::post('/register', [AuthController::class, 'register']);
@@ -36,3 +37,12 @@ Route::post('/contacts', [ContactController::class, 'store']);     // crear cont
 Route::get('/contacts', [ContactController::class, 'index']);      // listar contactos
 Route::patch('/contacts/{id}/read', [ContactController::class, 'markAsRead']); // marcar leído
 Route::get('/contacts/car/{carId}', [ContactController::class, 'byCar']);
+
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
+Route::get('/admin/users', [AdminController::class, 'users']);
+Route::get('/admin/cars', [CarController::class, 'adminCars']);
+
+Route::patch(
+    '/admin/cars/{id}/status',
+    [CarController::class, 'updateStatus']
+);
