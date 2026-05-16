@@ -95,10 +95,17 @@ class AuthController extends Controller
         }
 
         // Actualizar campos (solo los que vengan en el request)
-        $user->update($request->only([
-            'name', 'phone', 'location', 'bio', 
-            'curp', 'rfc', 'domicile', 'ine'
-        ]));
+$user->update($request->only([
+    'name',
+    'phone',
+    'location',
+    'bio',
+    'curp',
+    'rfc',
+    'domicile',
+    'ine',
+    'verified'
+]));
 
         return response()->json([
             'message' => 'Perfil actualizado',
