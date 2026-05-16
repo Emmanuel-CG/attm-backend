@@ -46,3 +46,5 @@ Route::patch(
     '/admin/cars/{id}/status',
     [CarController::class, 'updateStatus']
 );
+
+Route::post('/change-password', [AuthController::class, 'changePassword']);

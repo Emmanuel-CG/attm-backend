@@ -202,4 +202,40 @@ public function resetPassword(Request $request)
         ], 500);
     }
 }
+public function changePassword(Request $request)
+{
+    $token = $request->header('Authorization');
+
+    if (!$token) {
+        return response()->json([
+            'error' => 'Token no proporcionado'
+        ], 401);
+    }
+
+    $user = User::where('api_token', $token)->first();
+
+    if (!$user) {
+        return response()->json([
+            'error' => 'Sesion invalida'
+        ], 401);
+    }
+
+    $request->validate([
+        'currentPassword' => 'required',
+        'newPassword' => 'required|min:8'
+    ]);
+
+    if (!Hash::check($request->currentPassword, $user->password)) {
+        return response()->json([
+            'error' => 'Contraseña actual incorrecta'
+        ], 400);
+    }
+
+    $user->password = Hash::make($request->newPassword);
+    $user->save();
+
+    return response()->json([
+        'message' => 'Contraseña actualizada correctamente'
+    ]);
+}
 }
