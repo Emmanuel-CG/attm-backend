@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Car;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CarController extends Controller
 {
@@ -29,22 +30,25 @@ class CarController extends Controller
             'location'     => 'required|string',
             'phone'        => 'required|string',
             'description'  => 'required|string',
+            'images.*'     => 'image|mimes:jpg,jpeg,png,webp|max:4096',
         ]);
 
         $car = Car::create([
-            'user_id'      => $user->id,
-            'brand'        => $request->brand,
-            'model'        => $request->model,
-            'year'         => $request->year,
-            'price'        => $request->price,
-            'mileage'      => $request->mileage,
-            'transmission' => $request->transmission,
-            'fuelType'     => $request->fuelType,
-            'color'        => $request->color,
-            'location'     => $request->location,
-            'phone'        => $request->phone,
-            'description'  => $request->description,
-        ]);
+    'user_id'      => $user->id,
+    'brand'        => $request->brand,
+    'model'        => $request->model,
+    'year'         => $request->year,
+    'price'        => $request->price,
+    'mileage'      => $request->mileage,
+    'transmission' => $request->transmission,
+    'fuelType'     => $request->fuelType,
+    'color'        => $request->color,
+    'location'     => $request->location,
+    'phone'        => $request->phone,
+    'description'  => $request->description,
+    'images'       => $imagePaths,
+]);
+
 
         // sumar auto al user
         $user->totalCars++;

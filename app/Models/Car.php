@@ -20,8 +20,13 @@ class Car extends Model
         'location',
         'phone',
         'description',
+        'images',
     ];
-    
+
+    protected $casts = [
+        'images' => 'array',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
