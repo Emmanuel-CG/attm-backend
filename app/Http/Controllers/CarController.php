@@ -32,7 +32,18 @@ class CarController extends Controller
             'description'  => 'required|string',
             'images.*'     => 'image|mimes:jpg,jpeg,png,webp|max:4096',
         ]);
+// guardar imágenes
+$imagePaths = [];
 
+if ($request->hasFile('images')) {
+
+    foreach ($request->file('images') as $image) {
+
+        $path = $image->store('cars', 'public');
+
+        $imagePaths[] = asset('storage/' . $path);
+    }
+}
         $car = Car::create([
     'user_id'      => $user->id,
     'brand'        => $request->brand,
