@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Car;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class CarController extends Controller
 {
@@ -44,10 +43,14 @@ $imagePaths = [];
 if ($request->file('images')) {
 
     foreach ($request->file('images') as $image) {
+        
+$filename = time() . '_' . $image->getClientOriginalName();
 
-        $path = $image->store('cars', 'public');
+$image->move(public_path('cars'), $filename);
 
-        $imagePaths[] = asset('storage/' . $path);
+$imagePaths[] = url('cars/' . $filename);
+
+$imagePaths[] = asset('storage/' . $path);
     }
 }
         $car = Car::create([
