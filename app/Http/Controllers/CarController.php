@@ -63,11 +63,6 @@ try {
         'images'       => $imagePaths,
     ]);
 
-    return response()->json([
-        'message' => 'ok',
-        'car' => $car
-    ]);
-
 } catch (\Exception $e) {
 
     return response()->json([
@@ -121,8 +116,8 @@ public function show($id)
         'images'      => $car->images,
 
         // 🔥 lo único extra que ocupas
-        'sellerName'  => $car->user->name,
-        'sellerPhone' => $car->user->phone,
+        'sellerName'  => $car->user?->name,
+        'sellerPhone' => $car->user?->phone,
     ]);
 }
 
