@@ -17,12 +17,6 @@ class CarController extends Controller
             return response()->json(['error' => 'No autorizado'], 401);
         }
 
-        dd([
-    'all' => $request->all(),
-    'files' => $request->file('images'),
-    'hasFile' => $request->hasFile('images'),
-]);
-
         $request->validate([
             'brand'        => 'required|string',
             'model'        => 'required|string',
@@ -44,13 +38,11 @@ if ($request->file('images')) {
 
     foreach ($request->file('images') as $image) {
 
-$filename = time() . '_' . $image->getClientOriginalName();
+        $filename = time() . '_' . $image->getClientOriginalName();
 
-$image->move(public_path('cars'), $filename);
+        $image->move(public_path('cars'), $filename);
 
-$imagePaths[] = url('cars/' . $filename);
-
-$imagePaths[] = asset('storage/' . $path);
+        $imagePaths[] = url('cars/' . $filename);
     }
 }
 try {
