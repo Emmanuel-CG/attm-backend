@@ -18,6 +18,12 @@ class CarController extends Controller
             return response()->json(['error' => 'No autorizado'], 401);
         }
 
+        dd([
+    'all' => $request->all(),
+    'files' => $request->file('images'),
+    'hasFile' => $request->hasFile('images'),
+]);
+
         $request->validate([
             'brand'        => 'required|string',
             'model'        => 'required|string',
@@ -35,7 +41,7 @@ class CarController extends Controller
 // guardar imágenes
 $imagePaths = [];
 
-if ($request->hasFile('images')) {
+if ($request->file('images')) {
 
     foreach ($request->file('images') as $image) {
 
