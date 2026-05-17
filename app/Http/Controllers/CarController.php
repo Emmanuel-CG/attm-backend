@@ -43,7 +43,7 @@ $imagePaths = [];
 if ($request->file('images')) {
 
     foreach ($request->file('images') as $image) {
-        
+
 $filename = time() . '_' . $image->getClientOriginalName();
 
 $image->move(public_path('cars'), $filename);
@@ -53,22 +53,35 @@ $imagePaths[] = url('cars/' . $filename);
 $imagePaths[] = asset('storage/' . $path);
     }
 }
-        $car = Car::create([
-    'user_id'      => $user->id,
-    'brand'        => $request->brand,
-    'model'        => $request->model,
-    'year'         => $request->year,
-    'price'        => $request->price,
-    'mileage'      => $request->mileage,
-    'transmission' => $request->transmission,
-    'fuelType'     => $request->fuelType,
-    'color'        => $request->color,
-    'location'     => $request->location,
-    'phone'        => $request->phone,
-    'description'  => $request->description,
-    'images'       => $imagePaths,
-]);
+try {
 
+    $car = Car::create([
+        'user_id'      => $user->id,
+        'brand'        => $request->brand,
+        'model'        => $request->model,
+        'year'         => $request->year,
+        'price'        => $request->price,
+        'mileage'      => $request->mileage,
+        'transmission' => $request->transmission,
+        'fuelType'     => $request->fuelType,
+        'color'        => $request->color,
+        'location'     => $request->location,
+        'phone'        => $request->phone,
+        'description'  => $request->description,
+        'images'       => $imagePaths,
+    ]);
+
+    return response()->json([
+        'message' => 'ok',
+        'car' => $car
+    ]);
+
+} catch (\Exception $e) {
+
+    return response()->json([
+        'error' => $e->getMessage(),
+    ], 500);
+}
 
         // sumar auto al user
         $user->totalCars++;
