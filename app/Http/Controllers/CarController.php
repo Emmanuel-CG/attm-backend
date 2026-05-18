@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Car;
 use App\Models\User;
 use Illuminate\Http\Request;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class CarController extends Controller
 {
@@ -38,11 +39,14 @@ if ($request->file('images')) {
 
     foreach ($request->file('images') as $image) {
 
-        $filename = time() . '_' . $image->getClientOriginalName();
+        $uploadedFileUrl = Cloudinary::upload(
+            $image->getRealPath(),
+            [
+                'folder' => 'cars'
+            ]
+        )->getSecurePath();
 
-        $image->move(public_path('cars'), $filename);
-
-        $imagePaths[] = url('cars/' . $filename);
+        $imagePaths[] = $uploadedFileUrl;
     }
 }
 try {
