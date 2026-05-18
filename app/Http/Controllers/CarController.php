@@ -6,6 +6,7 @@ use App\Models\Car;
 use App\Models\User;
 use Illuminate\Http\Request;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Illuminate\Support\Facades\Storage; 
 
 class CarController extends Controller
 {
@@ -41,9 +42,9 @@ if ($request->file('images')) {
 
     foreach ($request->file('images') as $image) {
 
-        $path = $image->store('cars', 's3');
+$path = Storage::disk('s3')->put('cars', $image);
 
-        $imagePaths[] = env('AWS_URL') . '/' . $path;
+$imagePaths[] = env('AWS_URL') . '/' . $path;
     }
 }
     $car = Car::create([
