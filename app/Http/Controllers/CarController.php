@@ -33,6 +33,8 @@ class CarController extends Controller
             'images.*'     => 'image|mimes:jpg,jpeg,png,webp|max:4096',
         ]);
 // guardar imágenes
+
+try {
 $imagePaths = [];
 
 if ($request->file('images')) {
@@ -49,8 +51,6 @@ $uploadedFileUrl = Cloudinary::upload(
         $imagePaths[] = $uploadedFileUrl;
     }
 }
-try {
-
     $car = Car::create([
         'user_id'      => $user->id,
         'brand'        => $request->brand,
