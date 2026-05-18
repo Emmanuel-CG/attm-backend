@@ -67,7 +67,7 @@ $uploadedFileUrl = Cloudinary::upload(
         'images'       => $imagePaths,
     ]);
 
-} catch (\Exception $e) {
+} catch (\Throwable $e) {
 
 return response()->json([
     'error' => $e->getMessage(),
