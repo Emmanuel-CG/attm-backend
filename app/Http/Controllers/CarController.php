@@ -37,12 +37,15 @@ $imagePaths = [];
 
 if ($request->file('images')) {
 
-    return response()->json([
-        'cloudinary' => env('CLOUDINARY_URL'),
-    ]);
-
     foreach ($request->file('images') as $image) {
-        dd(env('CLOUDINARY_URL'));
+
+        $uploadedFileUrl = Cloudinary::upload(
+            $image->getRealPath(),
+            [
+                'folder' => 'cars'
+            ]
+        )->getSecurePath();
+
         $imagePaths[] = $uploadedFileUrl;
     }
 }
