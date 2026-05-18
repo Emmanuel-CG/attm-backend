@@ -42,7 +42,7 @@ if ($request->file('images')) {
 
     foreach ($request->file('images') as $image) {
 
-$path = Storage::disk('s3')->put('cars', $image);
+$path = Storage::disk('s3')->putFile('cars', $image);
 
 $imagePaths[] = env('AWS_URL') . '/' . $path;
     }
