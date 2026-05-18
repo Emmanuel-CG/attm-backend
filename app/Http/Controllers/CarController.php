@@ -69,9 +69,10 @@ try {
 
 } catch (\Exception $e) {
 
-    return response()->json([
-        'error' => $e->getMessage(),
-    ], 500);
+return response()->json([
+    'error' => $e->getMessage(),
+    'line' => $e->getLine(),
+], 500);
 }
 
         // sumar auto al user
