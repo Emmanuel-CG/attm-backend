@@ -41,12 +41,16 @@ if ($request->file('images')) {
 
 foreach ($request->file('images') as $image) {
 
-    return response()->json([
-        'path' => $image->path(),
-        'exists' => file_exists($image->path()),
-        'mime' => $image->getMimeType(),
-        'size' => $image->getSize(),
-    ]);
+    $uploaded = cloudinary()->upload(
+        $image->getRealPath(),
+        [
+            'folder' => 'cars'
+        ]
+    );
+
+    $uploadedFileUrl = $uploaded->getSecurePath();
+
+    $imagePaths[] = $uploadedFileUrl;
 }
 }
     $car = Car::create([
