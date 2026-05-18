@@ -48,12 +48,3 @@ Route::patch(
 );
 
 Route::post('/change-password', [AuthController::class, 'changePassword']);
-
-Route::get('/test-cloudinary', function () {
-
-    return response()->json([
-        'env' => env('CLOUDINARY_URL'),
-        'cloudinary_exists' => class_exists(\Cloudinary\Cloudinary::class),
-    ]);
-
-});

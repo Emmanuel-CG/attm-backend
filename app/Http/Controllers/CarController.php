@@ -262,13 +262,13 @@ public function adminCars()
                 'model' => $car->model,
                 'year' => $car->year,
                 'price' => $car->price,
-                'seller' => $car->user?->name ?? 'Sin usuario',
+                'seller' => $car->user ? $car->user->name : 'Sin usuario',
                 'status' => $car->status ?? 'pending',
                 'createdAt' => $car->created_at->format('Y-m-d'),
             ];
         });
 
-    return response()->json($cars);
+    return response()->json($car);
 }
 
 public function updateStatus(Request $request, $id)
