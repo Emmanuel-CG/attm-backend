@@ -39,19 +39,12 @@ $imagePaths = [];
 
 if ($request->file('images')) {
 
-foreach ($request->file('images') as $image) {
+    foreach ($request->file('images') as $image) {
 
-    $uploaded = cloudinary()->upload(
-        $image->getRealPath(),
-        [
-            'folder' => 'cars'
-        ]
-    );
+        $path = $image->store('cars', 's3');
 
-    $uploadedFileUrl = $uploaded->getSecurePath();
-
-    $imagePaths[] = $uploadedFileUrl;
-}
+        $imagePaths[] = env('AWS_URL') . '/' . $path;
+    }
 }
     $car = Car::create([
         'user_id'      => $user->id,
