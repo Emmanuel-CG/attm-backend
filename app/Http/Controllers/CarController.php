@@ -268,7 +268,7 @@ public function adminCars()
             ];
         });
 
-    return response()->json($car);
+    return response()->json($cars);
 }
 
 public function updateStatus(Request $request, $id)
