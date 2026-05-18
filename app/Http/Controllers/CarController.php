@@ -39,17 +39,19 @@ $imagePaths = [];
 
 if ($request->file('images')) {
 
-    foreach ($request->file('images') as $image) {
+foreach ($request->file('images') as $image) {
 
-$uploadedFileUrl = Cloudinary::upload(
-    $image->path(),
-    [
-        'folder' => 'cars'
-    ]
-)->getSecurePath();
+    $uploaded = Cloudinary::upload(
+        $image->path(),
+        [
+            'folder' => 'cars'
+        ]
+    );
 
-        $imagePaths[] = $uploadedFileUrl;
-    }
+    $uploadedFileUrl = $uploaded['secure_url'];
+
+    $imagePaths[] = $uploadedFileUrl;
+}
 }
     $car = Car::create([
         'user_id'      => $user->id,
