@@ -123,8 +123,8 @@ public function show($id)
         'images'      => $car->images,
 
         // 🔥 lo único extra que ocupas
-        'sellerName'  => $car->user?->name,
-        'sellerPhone' => $car->user?->phone,
+'sellerName'  => $car->user ? $car->user->name : null,
+'sellerPhone' => $car->user ? $car->user->phone : null,
     ]);
 }
 
