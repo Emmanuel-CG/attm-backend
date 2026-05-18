@@ -39,12 +39,12 @@ if ($request->file('images')) {
 
     foreach ($request->file('images') as $image) {
 
-        $uploadedFileUrl = Cloudinary::upload(
-            $image->getRealPath(),
-            [
-                'folder' => 'cars'
-            ]
-        )->getSecurePath();
+$uploadedFileUrl = Cloudinary::upload(
+    $image->path(),
+    [
+        'folder' => 'cars'
+    ]
+)->getSecurePath();
 
         $imagePaths[] = $uploadedFileUrl;
     }
