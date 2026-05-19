@@ -148,7 +148,7 @@ $user->update($request->only([
     $user->reset_token_expires_at = now()->addMinutes(30);
     $user->save();
 
-$frontendUrl = request()->getSchemeAndHttpHost();
+$frontendUrl = "https://frontend-o08dl5ayq-emmanuel-cgs-projects.vercel.app";
 
 $link = "$frontendUrl/reset-password?token=$token";
 
