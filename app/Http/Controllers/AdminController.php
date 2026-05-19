@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Car;
 use Illuminate\Http\Request;
+use App\Models\Report;
 
 class AdminController extends Controller
 {
@@ -14,7 +15,7 @@ class AdminController extends Controller
 
         $cars = Car::count();
 
-        $reports = 12;
+        $reports = Report::count();
 
         $revenue = 125400;
 
@@ -107,5 +108,42 @@ public function updateCarStatus(Request $request, $id)
     return response()->json([
         'message' => 'Estado actualizado'
     ]);
+}
+public function reports(Request $request)
+{
+    $token = $request->header('Authorization');
+
+    $admin = User::where('api_token', $token)->first();
+
+    if (!$admin || $admin->role !== 'admin') {
+
+        return response()->json([
+            'error' => 'No autorizado'
+        ], 403);
+    }
+
+    $reports = Report::with(['car'])
+        ->latest()
+        ->get()
+        ->map(function ($report) {
+
+            return [
+
+                'id' => $report->id,
+
+                'reason' => $report->reason,
+
+                'ip' => $report->ip,
+
+                'car' => $report->car
+                    ? $report->car->brand . ' ' . $report->car->model
+                    : 'Auto eliminado',
+
+                'created_at' => $report->created_at
+                    ->format('d/m/Y H:i'),
+            ];
+        });
+
+    return response()->json($reports);
 }
 }
