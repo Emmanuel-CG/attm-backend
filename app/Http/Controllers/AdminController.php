@@ -67,7 +67,7 @@ class AdminController extends Controller
             'name' => $user->name,
             'email' => $user->email,
             'phone' => $user->phone,
-            'verified' => true,
+            'verified' => $user->verified,
             'totalCars' => Car::where('user_id', $user->id)->count(),
             'status' => 'activo',
         ];
