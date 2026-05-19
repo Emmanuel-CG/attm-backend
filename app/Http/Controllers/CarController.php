@@ -296,6 +296,17 @@ public function updateStatus(Request $request, $id)
 }
 public function report(Request $request, $id)
 {
+    $token = $request->header('Authorization');
+
+    $user = User::where('api_token', $token)->first();
+
+    if (!$user) {
+
+        return response()->json([
+            'error' => 'Debes iniciar sesión'
+        ], 401);
+    }
+
     $car = Car::find($id);
 
     if (!$car) {
@@ -305,14 +316,21 @@ public function report(Request $request, $id)
         ], 404);
     }
 
-    $request->validate([
-        'reason' => 'required|string',
-        'details' => 'nullable|string',
-    ]);
+    $alreadyReported = Report::where('car_id', $car->id)
+        ->where('user_id', $user->id)
+        ->exists();
+
+    if ($alreadyReported) {
+
+        return response()->json([
+            'error' => 'Ya reportaste este auto'
+        ], 409);
+    }
 
     $report = Report::create([
 
         'car_id' => $car->id,
+        'user_id' => $user->id,
         'reason' => $request->reason,
         'details' => $request->details,
         'ip' => $request->ip(),
@@ -321,7 +339,6 @@ public function report(Request $request, $id)
     return response()->json([
 
         'message' => 'Reporte enviado correctamente',
-        'report' => $report
     ]);
 }
 }
