@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Car;
 use App\Models\User;
 use Illuminate\Http\Request;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
-use Illuminate\Support\Facades\Storage; 
+use Illuminate\Support\Facades\Storage;
+use App\Models\Report; 
 
 class CarController extends Controller
 {
@@ -292,6 +292,36 @@ public function updateStatus(Request $request, $id)
     return response()->json([
         'message' => 'Estado actualizado',
         'car' => $car
+    ]);
+}
+public function report(Request $request, $id)
+{
+    $car = Car::find($id);
+
+    if (!$car) {
+
+        return response()->json([
+            'error' => 'Auto no encontrado'
+        ], 404);
+    }
+
+    $request->validate([
+        'reason' => 'required|string',
+        'details' => 'nullable|string',
+    ]);
+
+    $report = Report::create([
+
+        'car_id' => $car->id,
+        'reason' => $request->reason,
+        'details' => $request->details,
+        'ip' => $request->ip(),
+    ]);
+
+    return response()->json([
+
+        'message' => 'Reporte enviado correctamente',
+        'report' => $report
     ]);
 }
 }

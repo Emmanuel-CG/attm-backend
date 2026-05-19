@@ -48,3 +48,4 @@ Route::patch(
 );
 
 Route::post('/change-password', [AuthController::class, 'changePassword']);
+Route::post('/cars/{id}/report', [CarController::class, 'report']);
