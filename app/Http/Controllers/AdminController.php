@@ -135,9 +135,11 @@ public function reports(Request $request)
 
                 'ip' => $report->ip,
 
-                'car' => $report->car
-                    ? $report->car->brand . ' ' . $report->car->model
-                    : 'Auto eliminado',
+'car' => $report->car
+    ? $report->car->brand . ' ' . $report->car->model
+    : 'Auto eliminado',
+
+'car_id' => $report->car?->id,
 
                 'created_at' => $report->created_at
                     ->format('d/m/Y H:i'),
