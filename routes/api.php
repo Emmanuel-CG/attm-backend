@@ -10,6 +10,29 @@ use App\Http\Controllers\AdminController;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
+Route::get('/user', function (Illuminate\Http\Request $request) {
+
+    $token = $request->header('Authorization');
+
+    if (!$token) {
+        return response()->json([
+            'error' => 'Token no proporcionado'
+        ], 401);
+    }
+
+    $user = \App\Models\User::where('api_token', $token)->first();
+
+    if (!$user) {
+        return response()->json([
+            'error' => 'Sesion invalida'
+        ], 401);
+    }
+
+    return response()->json([
+        'user' => $user
+    ]);
+});
+
 
 Route::post('/forgot-password', [AuthController::class, 'sendRecoveryEmail']);
 Route::post('/reset-password', [AuthController::class, 'resetPassword']);
