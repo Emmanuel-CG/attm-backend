@@ -6,7 +6,9 @@ use App\Models\Car;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use App\Models\Report; 
+use Illuminate\Support\Facades\Http;
+use App\Models\Report;
+
 
 class CarController extends Controller
 {
@@ -47,7 +49,19 @@ $path = Storage::disk('s3')->putFile('cars', $image);
 $imagePaths[] = env('AWS_URL') . '/' . $path;
     }
 }
+$responseIA = Http::post(
+    'https://automarket-ia.onrender.com/predict',
+    [
+        'year' => $request->year,
+        'kilometer' => $request->mileage
+    ]
+);
+
+$priceIA = $responseIA['price'];
+
+
     $car = Car::create([
+        'ai_price' => $priceIA,
         'user_id'      => $user->id,
         'brand'        => $request->brand,
         'model'        => $request->model,

@@ -8,6 +8,7 @@ use App\Models\User;
 class Car extends Model
 {
     protected $fillable = [
+        'ai_price',
         'user_id',
         'brand',
         'model',
