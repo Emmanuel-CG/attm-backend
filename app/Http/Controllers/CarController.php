@@ -49,11 +49,43 @@ $path = Storage::disk('s3')->putFile('cars', $image);
 $imagePaths[] = env('AWS_URL') . '/' . $path;
     }
 }
+$transmission = $request->transmission;
+
+if ($transmission == "Automática") {
+    $transmission = "Automatic";
+}
+
+if ($transmission == "Manual") {
+    $transmission = "Manual";
+}
+
+$fuel = $request->fuelType;
+
+if ($fuel == "Gasolina") {
+    $fuel = "Petrol";
+}
+
+if ($fuel == "Diésel") {
+    $fuel = "Diesel";
+}
+
+if ($fuel == "Híbrido") {
+    $fuel = "Hybrid";
+}
+
+if ($fuel == "Eléctrico") {
+    $fuel = "Electric";
+}
+
 $responseIA = Http::post(
     'https://automarket-ia.onrender.com/predict',
     [
-        'year' => $request->year,
-        'kilometer' => $request->mileage
+        'Brand' => $request->brand,
+        'Model' => $request->model,
+        'Model_Ye' => (int)$request->year,
+        'Kilometer' => (int)$request->mileage,
+        'Fuel_Type' => $fuel,
+        'Transmiss' => $transmission
     ]
 );
 
