@@ -153,6 +153,7 @@ public function show($id)
         'model'       => $car->model,
         'year'        => $car->year,
         'price'       => $car->price,
+        'ai_price'    => $car->ai_price,
         'mileage'     => $car->mileage,
         'transmission'=> $car->transmission,
         'fuelType'    => $car->fuelType,
